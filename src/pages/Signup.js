@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../api';  // corrected here too
 
 function Signup() {
   const [formData, setFormData] = useState({
@@ -16,10 +16,10 @@ function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/auth/signup', formData);
+      await api.post('/auth/signup', formData);
       window.location.href = '/login';
     } catch (error) {
-      alert('Signup failed. ' + error.response?.data?.message);
+      alert('Signup failed. ' + (error.response?.data?.message || 'Unexpected error.'));
     }
   };
 

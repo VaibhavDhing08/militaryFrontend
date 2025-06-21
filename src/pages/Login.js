@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../api';  // correct path to your api.js
 
 function Login() {
   const [formData, setFormData] = useState({ username: '', password: '' });
@@ -11,11 +11,11 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:5000/api/auth/login', formData);
+      const res = await api.post('/auth/login', formData);
       localStorage.setItem('token', res.data.token);
       window.location.href = '/';
     } catch (error) {
-      alert('Login failed. ' + error.response?.data?.message);
+      alert('Login failed. ' + (error.response?.data?.message || 'Unexpected error.'));
     }
   };
 
