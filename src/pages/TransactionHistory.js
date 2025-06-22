@@ -1,28 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../api';
 
 function TransactionHistory() {
   const [purchases, setPurchases] = useState([]);
-
   const [type, setType] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
 
-  const token = localStorage.getItem('token');
-
   const fetchPurchases = async (filters = {}) => {
     try {
-      const response = await axios.get('http://localhost:5000/api/assets/purchases', {
+      const token = localStorage.getItem('token');
+
+      const response = await api.get('/assets/purchases', {
         headers: { Authorization: `Bearer ${token}` },
         params: { ...filters }
       });
+
       setPurchases(response.data);
     } catch (err) {
       console.error('Failed to fetch purchases:', err);
     }
   };
 
-  // Initial load
   useEffect(() => {
     fetchPurchases();
   }, []);

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../api';
 
 function Dashboard() {
   const [stats, setStats] = useState(null);
@@ -12,7 +12,7 @@ function Dashboard() {
     try {
       const token = localStorage.getItem('token');
 
-      const response = await axios.get(`http://localhost:5000/api/assets/dashboard`, {
+      const response = await api.get('/assets/dashboard', {
         headers: { Authorization: `Bearer ${token}` },
         params: {
           base_id: baseId,

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../api';
 
 const AssetAssignment = () => {
   const [assets, setAssets] = useState([]);
@@ -13,7 +13,7 @@ const AssetAssignment = () => {
   useEffect(() => {
     const fetchAssets = async () => {
       const token = localStorage.getItem('token');
-      const res = await axios.get('http://localhost:5000/api/assets/assets', {
+      const res = await api.get('/assets/assets', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setAssets(res.data);
@@ -22,13 +22,13 @@ const AssetAssignment = () => {
   }, []);
 
   const handleChange = (e) => {
-    setFormData({...formData, [e.target.name]: e.target.value});
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/assets/assign', formData, {
+      await api.post('/assets/assign', formData, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       });
       alert('Asset assigned successfully');

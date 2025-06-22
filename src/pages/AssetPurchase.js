@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../api';
 
 function AssetPurchase() {
   const [assetData, setAssetData] = useState({
@@ -21,7 +21,7 @@ function AssetPurchase() {
     try {
       const token = localStorage.getItem('token');
 
-      await axios.post('http://localhost:5000/api/assets/purchase', assetData, {
+      await api.post('/assets/purchase', assetData, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -37,13 +37,12 @@ function AssetPurchase() {
   const fetchPurchaseHistory = async () => {
     try {
       const token = localStorage.getItem('token');
-
       const params = {};
       if (filters.type) params.type = filters.type;
       if (filters.startDate) params.startDate = filters.startDate;
       if (filters.endDate) params.endDate = filters.endDate;
 
-      const res = await axios.get('http://localhost:5000/api/assets/purchases', {
+      const res = await api.get('/assets/purchases', {
         headers: { Authorization: `Bearer ${token}` },
         params
       });
@@ -67,33 +66,6 @@ function AssetPurchase() {
         <input type="date" name="purchased_on" value={assetData.purchased_on} onChange={handleChange} required /><br />
         <button type="submit">Purchase Asset</button>
       </form>
-
-      <h3 style={{ marginTop: '30px' }}>Purchase History Filters</h3>
-      <input type="text" name="type" placeholder="Equipment Type" value={filters.type} onChange={handleFilterChange} />
-      <input type="date" name="startDate" value={filters.startDate} onChange={handleFilterChange} />
-      <input type="date" name="endDate" value={filters.endDate} onChange={handleFilterChange} />
-      <button onClick={fetchPurchaseHistory}>Apply Filters</button>
-
-      <h3 style={{ marginTop: '30px' }}>Purchase History</h3>
-      <table border="1" cellPadding="8">
-        <thead>
-          <tr>
-            <th>ID</th><th>Asset Name</th><th>Type</th><th>Base ID</th><th>Quantity</th><th>Purchased On</th>
-          </tr>
-        </thead>
-        <tbody>
-          {purchaseHistory.map((purchase, index) => (
-            <tr key={index}>
-              <td>{purchase.asset_id}</td>
-              <td>{purchase.asset_name}</td>
-              <td>{purchase.type}</td>
-              <td>{purchase.base_id}</td>
-              <td>{purchase.quantity}</td>
-              <td>{purchase.purchased_on}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../api';
 
 function AssetTransfer() {
   const [assets, setAssets] = useState([]);
@@ -14,7 +14,7 @@ function AssetTransfer() {
   useEffect(() => {
     const fetchAssets = async () => {
       const token = localStorage.getItem('token');
-      const res = await axios.get('http://localhost:5000/api/assets/assets', {
+      const res = await api.get('/assets/assets', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setAssets(res.data);
@@ -29,7 +29,7 @@ function AssetTransfer() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/assets/transfer', transferData, {
+      await api.post('/assets/transfer', transferData, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       });
       alert('Asset transferred successfully!');

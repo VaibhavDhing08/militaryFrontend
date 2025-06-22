@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../api';
 
 function AssetExpenditure() {
   const [assets, setAssets] = useState([]);
@@ -10,7 +10,7 @@ function AssetExpenditure() {
   useEffect(() => {
     const fetchAssets = async () => {
       const token = localStorage.getItem('token');
-      const res = await axios.get('http://localhost:5000/api/assets/assets', {
+      const res = await api.get('/assets/assets', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setAssets(res.data);
@@ -27,7 +27,7 @@ function AssetExpenditure() {
         expended_date: expendedDate,
       };
 
-      await axios.post('http://localhost:5000/api/assets/expend', data, {
+      await api.post('/assets/expend', data, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       });
 
